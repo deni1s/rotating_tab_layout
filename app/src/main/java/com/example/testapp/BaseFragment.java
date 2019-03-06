@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
     private View progressBar;
 

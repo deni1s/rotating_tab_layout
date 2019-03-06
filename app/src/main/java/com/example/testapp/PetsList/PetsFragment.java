@@ -2,17 +2,14 @@ package com.example.testapp.PetsList;
 
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.testapp.BaseFragment;
-import com.example.testapp.Helper.ListHelper;
 import com.example.testapp.Model.Pet;
 import com.example.testapp.Model.PetResponse;
 import com.example.testapp.PetDetail.PetDetailsFragment;
@@ -20,7 +17,6 @@ import com.example.testapp.R;
 import com.example.testapp.Retrofit.RetrofitSingleton;
 import com.example.testapp.Utils.ItemClickSupport;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Subscriber;
@@ -39,7 +35,7 @@ public class PetsFragment extends BaseFragment {
     private View rootView;
     private boolean isLoading;
     private Subscription subscription;
-    private ArrayList<Pet> petsList = new ArrayList<>();
+    private Parcelable listState;
 
 
     public static PetsFragment newInstance(String title, String requestQuery) {
@@ -52,30 +48,33 @@ public class PetsFragment extends BaseFragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        if (recyclerViewRequests != null) {
+            listState = recyclerViewRequests.getLayoutManager().onSaveInstanceState();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         setTitle("Питомцы");
-        if (ListHelper.isEmpty(petsList)) {
-            rootView = inflater.inflate(R.layout.fragment_pets_list, container, false);
-            prepareViews(rootView);
-        }
-        if (savedInstanceState != null) {
-            restorePreviousState(savedInstanceState); // Restore data found in the Bundle
-        } else if (ListHelper.isEmpty(petsList)) {
-            loadPets();
-        }
+        rootView = inflater.inflate(R.layout.fragment_pets_list, container, false);
+        prepareViews(rootView);
+        loadPets(savedInstanceState);
         return rootView;
     }
 
     public void restorePreviousState(Bundle savedInstanceState) {
-        // getting recyclerview position
-        Parcelable listState = savedInstanceState.getParcelable(SAVED_RECYCLER_VIEW_STATUS_ID);
-        // getting recyclerview items
-        petsList = savedInstanceState.getParcelableArrayList(SAVED_RECYCLER_VIEW_DATASET_ID);
-        // Restoring adapter items
-        petsAdapter.setCatsList(petsList);
-        // Restoring recycler view position
+        if (listState == null) {
+            // getting recyclerview position
+            listState = savedInstanceState.getParcelable(SAVED_RECYCLER_VIEW_STATUS_ID);
+            // getting recyclerview items
+            //  petsAdapter.setPetsList(petsList);
+            // Restoring recycler view position
+        }
         recyclerViewRequests.getLayoutManager().onRestoreInstanceState(listState);
+        listState = null;
     }
 
     @Override
@@ -84,7 +83,6 @@ public class PetsFragment extends BaseFragment {
         // putting recyclerview position
         outState.putParcelable(SAVED_RECYCLER_VIEW_STATUS_ID, listState);
         // putting recyclerview items
-        outState.putParcelableArrayList(SAVED_RECYCLER_VIEW_DATASET_ID, petsList);
         super.onSaveInstanceState(outState);
     }
 
@@ -107,7 +105,7 @@ public class PetsFragment extends BaseFragment {
         recyclerViewRequests.setAdapter(petsAdapter);
     }
 
-    private void loadPets() {
+    private void loadPets(final Bundle savedInstanceState) {
         showProgressBar();
         if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
@@ -122,7 +120,6 @@ public class PetsFragment extends BaseFragment {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("das", "onError", e);
                         isLoading = false;
                         hideProgressBar();
                         if (isAdded()) {
@@ -131,9 +128,9 @@ public class PetsFragment extends BaseFragment {
                                     .setAction("dsasda", new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            RetrofitSingleton.resetModelsObservable("dog");
+                                            RetrofitSingleton.resetModelsObservable(getArguments().getString(REQUEST_QUERY_BUNDLE));
                                             showProgressBar();
-                                            loadPets();
+                                            loadPets(savedInstanceState);
                                         }
                                     })
                                     .show();
@@ -144,10 +141,12 @@ public class PetsFragment extends BaseFragment {
                     public void onNext(PetResponse petResponse) {
                         hideProgressBar();
                         isLoading = false;
-                        petsList.clear();
-                        petsList.addAll(petResponse.getData());
+                        List<Pet> petsList = petResponse.getData();
                         if (isAdded()) {
-                            petsAdapter.setCatsList(petsList);
+                            petsAdapter.setPetsList(petsList);
+                        }
+                        if (savedInstanceState != null || listState != null) {
+                            restorePreviousState(savedInstanceState);
                         }
                     }
                 });

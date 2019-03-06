@@ -18,6 +18,7 @@ import java.util.List;
 public class TabActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
     private TabLayout tabLayout;
     private List<TabLayoutItem> tabLayoutItems;
+    private final String BUNDLE_KEY_TAB_POSITION = "tabposition";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,7 +28,7 @@ public class TabActivity extends AppCompatActivity implements TabLayout.OnTabSel
         initToolbar();
         prepareTabLayout();
         if (savedInstanceState != null) {
-            int selectedTabPosition = savedInstanceState.getInt("LastTab");
+            int selectedTabPosition = savedInstanceState.getInt(BUNDLE_KEY_TAB_POSITION);
             tabLayout.getTabAt(selectedTabPosition).select();
         } else {
             openFragment(tabLayoutItems.get(0).getFragment());
@@ -54,12 +55,12 @@ public class TabActivity extends AppCompatActivity implements TabLayout.OnTabSel
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("LastTab", tabLayout.getSelectedTabPosition());
+        outState.putInt(BUNDLE_KEY_TAB_POSITION, tabLayout.getSelectedTabPosition());
     }
 
     private List<TabLayoutItem> getTabLayoutItems() {
-        TabLayoutItem tabLayoutItemCat = new TabLayoutItem("Кошки", getPetFragment("Кошки", "cat"), "cat");
-        TabLayoutItem tabLayoutItemDog = new TabLayoutItem("Dog", getPetFragment("Собаки", "dog"), "dog");
+        TabLayoutItem tabLayoutItemCat = new TabLayoutItem(getString(R.string.cats), getString(R.string.cats_query));
+        TabLayoutItem tabLayoutItemDog = new TabLayoutItem(getString(R.string.dogs), getString(R.string.dogs_query));
         List<TabLayoutItem> tabLayoutItemList = new ArrayList<>();
         tabLayoutItemList.add(tabLayoutItemCat);
         tabLayoutItemList.add(tabLayoutItemDog);
@@ -80,18 +81,9 @@ public class TabActivity extends AppCompatActivity implements TabLayout.OnTabSel
         );
     }
 
-    @Override
-    public Object onRetainCustomNonConfigurationInstance() {
-        return super.onRetainCustomNonConfigurationInstance();
-    }
-
     private void openFragment(BaseFragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_wrapper, fragment).commit();
-    }
-
-    private BaseFragment getPetFragment(String title, String query) {
-        return PetsFragment.newInstance(title, query);
     }
 
     @Override

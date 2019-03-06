@@ -12,10 +12,11 @@ import com.example.testapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PetsAdapter extends RecyclerView.Adapter<CatsViewHolder> {
 
-    private ArrayList<Pet> catsList;
+    private List<Pet> catsList;
     private Context context;
 
     public PetsAdapter(Context context) {
@@ -23,7 +24,7 @@ public class PetsAdapter extends RecyclerView.Adapter<CatsViewHolder> {
         this.context = context;
     }
 
-    public void setCatsList(ArrayList<Pet> catsList) {
+    public void setPetsList(List<Pet> catsList) {
         this.catsList = catsList;
         notifyDataSetChanged();
     }

@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">testapp</string>
     <string name="string_title_my_requests">tabs</string>
+    <string name="cats">Кошки</string>
+    <string name="cats_query">cat</string>
+    <string name="dogs">Собаки</string>
+    <string name="dogs_query">dog</string>
 </resources>

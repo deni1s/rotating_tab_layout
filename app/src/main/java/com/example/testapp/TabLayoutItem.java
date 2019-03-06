@@ -1,14 +1,16 @@
 package com.example.testapp;
 
+import com.example.testapp.PetsList.PetsFragment;
+
 public class TabLayoutItem {
     private String title;
-    private BaseFragment fragment;
+    private PetsFragment fragment;
     private String requestQuery;
 
-    public TabLayoutItem(String title, BaseFragment baseFragment, String query) {
+    public TabLayoutItem(String title, String query) {
         this.title = title;
-        this.fragment = baseFragment;
         this.requestQuery = query;
+        this.fragment = PetsFragment.newInstance(title, query);
     }
 
     public String getTitle() {
