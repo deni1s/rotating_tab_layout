@@ -1,11 +1,12 @@
-package com.example.testapp;
+package com.example.testapp.Retrofit;
 
 import android.util.Log;
 
+import com.example.testapp.BuildConfig;
+import com.example.testapp.Model.PetResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import retrofit2.Retrofit;

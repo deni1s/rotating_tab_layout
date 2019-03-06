@@ -1,7 +1,8 @@
-package com.example.testapp;
+package com.example.testapp.Retrofit;
+
+import com.example.testapp.Model.PetResponse;
 
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 

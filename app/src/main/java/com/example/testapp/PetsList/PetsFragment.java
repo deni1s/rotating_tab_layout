@@ -1,7 +1,8 @@
-package com.example.testapp;
+package com.example.testapp.PetsList;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.testapp.BaseFragment;
+import com.example.testapp.Helper.ListHelper;
+import com.example.testapp.Model.Pet;
+import com.example.testapp.Model.PetResponse;
+import com.example.testapp.PetDetail.PetDetailsFragment;
+import com.example.testapp.R;
+import com.example.testapp.Retrofit.RetrofitSingleton;
+import com.example.testapp.Utils.ItemClickSupport;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -19,11 +30,8 @@ import rx.schedulers.Schedulers;
 
 public class PetsFragment extends BaseFragment {
 
-    private static final String BUNDLE_RECYCLER_LAYOUT = "classname.recycler.layout";
     private final static String TITLE_BUNDLE = "title";
     private final static String REQUEST_QUERY_BUNDLE = "requestQuery";
-    private final static String PETSLIST_BUNDLE = "pets";
-    private final static String KEY_IS_LOADING = "isLoading";
     private static final String SAVED_RECYCLER_VIEW_STATUS_ID = "list_state";
     private static final String SAVED_RECYCLER_VIEW_DATASET_ID = "items";
     private RecyclerView recyclerViewRequests;
@@ -32,6 +40,7 @@ public class PetsFragment extends BaseFragment {
     private boolean isLoading;
     private Subscription subscription;
     private ArrayList<Pet> petsList = new ArrayList<>();
+
 
     public static PetsFragment newInstance(String title, String requestQuery) {
         PetsFragment fragment = new PetsFragment();
@@ -45,28 +54,28 @@ public class PetsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        setTitle("casas");
-        rootView = inflater.inflate(R.layout.fragment_pets_list, container, false);
-        prepareViews(rootView);
-
-        if (savedInstanceState == null) {
-            loadPets();
-        } else {
-            restorePreviousState(savedInstanceState); // Restore data found in the Bundle
+        setTitle("Питомцы");
+        if (ListHelper.isEmpty(petsList)) {
+            rootView = inflater.inflate(R.layout.fragment_pets_list, container, false);
+            prepareViews(rootView);
         }
-
+        if (savedInstanceState != null) {
+            restorePreviousState(savedInstanceState); // Restore data found in the Bundle
+        } else if (ListHelper.isEmpty(petsList)) {
+            loadPets();
+        }
         return rootView;
     }
 
-    public void restorePreviousState(Bundle mSavedInstanceState) {
+    public void restorePreviousState(Bundle savedInstanceState) {
         // getting recyclerview position
-        Parcelable mListState = mSavedInstanceState.getParcelable(SAVED_RECYCLER_VIEW_STATUS_ID);
+        Parcelable listState = savedInstanceState.getParcelable(SAVED_RECYCLER_VIEW_STATUS_ID);
         // getting recyclerview items
-        petsList = mSavedInstanceState.getParcelableArrayList(SAVED_RECYCLER_VIEW_DATASET_ID);
+        petsList = savedInstanceState.getParcelableArrayList(SAVED_RECYCLER_VIEW_DATASET_ID);
         // Restoring adapter items
         petsAdapter.setCatsList(petsList);
         // Restoring recycler view position
-        recyclerViewRequests.getLayoutManager().onRestoreInstanceState(mListState);
+        recyclerViewRequests.getLayoutManager().onRestoreInstanceState(listState);
     }
 
     @Override
@@ -84,20 +93,16 @@ public class PetsFragment extends BaseFragment {
         petsAdapter = new PetsAdapter(getContext());
         recyclerViewRequests = rootView.findViewById(R.id.recycler_view_pets);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-
-/*        ItemClickSupport.addTo(recyclerViewRequests).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+        ItemClickSupport.addTo(recyclerViewRequests).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                Pet item = petsAdapter.getItem(position);
-                if (item != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(CAT_BUNDLE, item);
-                    CatsDetailFragment fragment = new CatsDetailFragment();
-                    fragment.setArguments(bundle);
-                    loadFragment(fragment, true);
+                Pet pet = petsAdapter.getItem(position);
+                if (pet != null) {
+                    PetDetailsFragment petDetailsFragment = PetDetailsFragment.newInstance(pet);
+                    loadFragment(petDetailsFragment, true);
                 }
             }
-        });*/
+        });
         recyclerViewRequests.setLayoutManager(linearLayoutManager);
         recyclerViewRequests.setAdapter(petsAdapter);
     }

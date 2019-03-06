@@ -1,4 +1,6 @@
-package com.example.testapp;
+package com.example.testapp.Model;
+
+import com.example.testapp.Model.Pet;
 
 import java.util.List;
 
