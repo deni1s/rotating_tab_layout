@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.testapp.CatsViewHolder;
 import com.example.testapp.Model.Pet;
 import com.example.testapp.R;
 import com.squareup.picasso.Picasso;
@@ -14,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PetsAdapter extends RecyclerView.Adapter<CatsViewHolder> {
+public class PetsAdapter extends RecyclerView.Adapter<PetsViewHolder> {
 
     private List<Pet> catsList;
     private Context context;
@@ -30,17 +29,17 @@ public class PetsAdapter extends RecyclerView.Adapter<CatsViewHolder> {
     }
 
     @Override
-    public CatsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PetsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View viewHolderCat = inflater.inflate(R.layout.view_holder_pet, parent, false);
-        return new CatsViewHolder(viewHolderCat);
+        return new PetsViewHolder(viewHolderCat);
     }
 
     @Override
-    public void onBindViewHolder(CatsViewHolder catsViewHolder, final int position) {
+    public void onBindViewHolder(PetsViewHolder petsViewHolder, final int position) {
         Pet pet = catsList.get(position);
-        catsViewHolder.getTextViewTitle().setText(pet.getTitle());
-        Picasso.with(context).load(pet.getUrl()).error(R.drawable.ic_launcher_background).into(catsViewHolder.getImageView());
+        petsViewHolder.getTextViewTitle().setText(pet.getTitle());
+        Picasso.with(context).load(pet.getUrl()).error(R.drawable.ic_launcher_background).into(petsViewHolder.getImageView());
     }
 
 

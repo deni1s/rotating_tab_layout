@@ -1,13 +1,19 @@
 package com.example.testapp.Retrofit;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.testapp.BuildConfig;
+import com.example.testapp.Helper.ListHelper;
 import com.example.testapp.Model.PetResponse;
+import com.example.testapp.R;
+import com.example.testapp.Model.TabLayoutItem;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -18,14 +24,15 @@ import rx.Subscription;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 
-public class RetrofitSingleton {
-    private static final String TAG = RetrofitSingleton.class.getSimpleName();
+public class AppSingleton {
+    private static final String TAG = AppSingleton.class.getSimpleName();
 
     private static PetsApiInterface apiService;
     private static HashMap<String, BehaviorSubject<PetResponse>> observableModelsList;
     private static Subscription subscription;
+    private static List<TabLayoutItem> tabLayoutItemList;
 
-    private RetrofitSingleton() {
+    private AppSingleton() {
     }
 
     public static void init() {
@@ -45,6 +52,17 @@ public class RetrofitSingleton {
         observableModelsList = new HashMap<>();
     }
 
+    public static List<TabLayoutItem> getTabLayoutItems(Context context) {
+        if (ListHelper.isEmpty(tabLayoutItemList)) {
+            tabLayoutItemList = new ArrayList<>();
+            TabLayoutItem tabLayoutItemCat = new TabLayoutItem(context.getString(R.string.cats), context.getString(R.string.cats_query));
+            TabLayoutItem tabLayoutItemDog = new TabLayoutItem(context.getString(R.string.dogs), context.getString(R.string.dogs_query));
+            tabLayoutItemList.add(tabLayoutItemCat);
+            tabLayoutItemList.add(tabLayoutItemDog);
+        }
+        return tabLayoutItemList;
+    }
+
     public static void resetModelsObservable(String query) {
         final BehaviorSubject<PetResponse> observableModelsItem = BehaviorSubject.create();
         observableModelsList.put(query, observableModelsItem);
@@ -55,7 +73,6 @@ public class RetrofitSingleton {
         subscription = apiService.getCatsList(query).subscribe(new Subscriber<PetResponse>() {
             @Override
             public void onCompleted() {
-                //do nothing
             }
 
             @Override

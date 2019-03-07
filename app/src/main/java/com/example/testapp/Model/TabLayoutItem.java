@@ -1,5 +1,6 @@
-package com.example.testapp;
+package com.example.testapp.Model;
 
+import com.example.testapp.Utils.BaseFragment;
 import com.example.testapp.PetsList.PetsFragment;
 
 public class TabLayoutItem {
@@ -10,7 +11,7 @@ public class TabLayoutItem {
     public TabLayoutItem(String title, String query) {
         this.title = title;
         this.requestQuery = query;
-        this.fragment = PetsFragment.newInstance(title, query);
+        this.fragment = PetsFragment.newInstance(query);
     }
 
     public String getTitle() {

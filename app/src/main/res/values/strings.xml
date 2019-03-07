@@ -5,4 +5,6 @@
     <string name="cats_query">cat</string>
     <string name="dogs">Собаки</string>
     <string name="dogs_query">dog</string>
+    <string name="reload">Перезагрузить</string>
+    <string name="error">Ошибка</string>
 </resources>

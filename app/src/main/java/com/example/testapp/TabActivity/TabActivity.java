@@ -3,22 +3,22 @@ package com.example.testapp.TabActivity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.example.testapp.BaseFragment;
-import com.example.testapp.PetsList.PetsFragment;
+import com.example.testapp.Model.TabLayoutItem;
 import com.example.testapp.R;
-import com.example.testapp.TabLayoutItem;
+import com.example.testapp.Retrofit.AppSingleton;
+import com.example.testapp.Utils.BaseFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TabActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
+    private final String BUNDLE_KEY_TAB_POSITION = "tabposition";
     private TabLayout tabLayout;
     private List<TabLayoutItem> tabLayoutItems;
-    private final String BUNDLE_KEY_TAB_POSITION = "tabposition";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,6 +26,7 @@ public class TabActivity extends AppCompatActivity implements TabLayout.OnTabSel
         setTitle(getString(R.string.string_title_my_requests));
         setContentView(R.layout.activity_main);
         initToolbar();
+        prepareOnBackStackListener();
         prepareTabLayout();
         if (savedInstanceState != null) {
             int selectedTabPosition = savedInstanceState.getInt(BUNDLE_KEY_TAB_POSITION);
@@ -34,6 +35,21 @@ public class TabActivity extends AppCompatActivity implements TabLayout.OnTabSel
             openFragment(tabLayoutItems.get(0).getFragment());
         }
         tabLayout.addOnTabSelectedListener(this);
+    }
+
+    private void prepareOnBackStackListener() {
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                int fragmentStackCount = getSupportFragmentManager().getBackStackEntryCount();
+                if (fragmentStackCount > 0) {
+                    tabLayout.setVisibility(View.GONE);
+                } else {
+                    tabLayout.setVisibility(View.VISIBLE);
+
+                }
+            }
+        });
     }
 
     private void initToolbar() {
@@ -58,20 +74,12 @@ public class TabActivity extends AppCompatActivity implements TabLayout.OnTabSel
         outState.putInt(BUNDLE_KEY_TAB_POSITION, tabLayout.getSelectedTabPosition());
     }
 
-    private List<TabLayoutItem> getTabLayoutItems() {
-        TabLayoutItem tabLayoutItemCat = new TabLayoutItem(getString(R.string.cats), getString(R.string.cats_query));
-        TabLayoutItem tabLayoutItemDog = new TabLayoutItem(getString(R.string.dogs), getString(R.string.dogs_query));
-        List<TabLayoutItem> tabLayoutItemList = new ArrayList<>();
-        tabLayoutItemList.add(tabLayoutItemCat);
-        tabLayoutItemList.add(tabLayoutItemDog);
-        return tabLayoutItemList;
-    }
 
     private void prepareTabLayout() {
         tabLayout = findViewById(R.id.tab_layout);
         tabLayout.removeOnTabSelectedListener(this);
         tabLayout.removeAllTabs();
-        tabLayoutItems = getTabLayoutItems();
+        tabLayoutItems = AppSingleton.getTabLayoutItems(this);
         for (TabLayoutItem tabItem : tabLayoutItems) {
             tabLayout.addTab(tabLayout.newTab().setText(tabItem.getTitle()));
         }

@@ -7,9 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.testapp.BaseFragment;
+import com.example.testapp.Utils.BaseFragment;
 import com.example.testapp.Model.Pet;
-import com.example.testapp.PetsList.PetsFragment;
 import com.example.testapp.R;
 import com.squareup.picasso.Picasso;
 

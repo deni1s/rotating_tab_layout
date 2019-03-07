@@ -1,4 +1,4 @@
-package com.example.testapp;
+package com.example.testapp.Utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import com.example.testapp.R;
 
 public abstract class BaseFragment extends Fragment {
 
@@ -99,14 +101,6 @@ public abstract class BaseFragment extends Fragment {
         }
         if (context != null) {
             Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void showSnackbar(String text) {
-        if (getView() != null) {
-            Snackbar.make(getView(), text, Snackbar.LENGTH_SHORT).show();
-        } else {
-            showToast(text);
         }
     }
 

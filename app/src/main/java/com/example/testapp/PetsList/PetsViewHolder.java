@@ -1,4 +1,4 @@
-package com.example.testapp;
+package com.example.testapp.PetsList;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -6,12 +6,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CatsViewHolder extends RecyclerView.ViewHolder {
+import com.example.testapp.R;
+
+public class PetsViewHolder extends RecyclerView.ViewHolder {
 
     private TextView textViewTitle;
     private ImageView imageView;
 
-    public CatsViewHolder(@NonNull View itemView) {
+    public PetsViewHolder(@NonNull View itemView) {
         super(itemView);
         textViewTitle = itemView.findViewById(R.id.text_view_title);
         imageView = itemView.findViewById(R.id.image_view);
