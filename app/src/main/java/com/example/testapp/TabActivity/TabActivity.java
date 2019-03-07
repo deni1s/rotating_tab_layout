@@ -24,7 +24,7 @@ public class TabActivity extends AppCompatActivity implements TabLayout.OnTabSel
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(getString(R.string.string_title_my_requests));
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_tabs);
         initToolbar();
         prepareOnBackStackListener();
         prepareTabLayout();
