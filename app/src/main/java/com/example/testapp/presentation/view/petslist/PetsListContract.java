@@ -23,5 +23,6 @@ public class PetsListContract {
     interface Presenter extends MvpPresenter<View> {
 
         void loadPets();
+        void reloadPets();
     }
 }

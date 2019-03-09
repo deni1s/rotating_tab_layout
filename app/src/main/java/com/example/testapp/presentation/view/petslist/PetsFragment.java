@@ -129,9 +129,7 @@ public class PetsFragment extends BaseFragment implements PetsListContract.View 
                     .setAction(R.string.reload, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            RetrofitSingleton.getInstance().resetModelsObservable(getArguments().getString(REQUEST_QUERY_BUNDLE));
-                            showProgressBar();
-                            presenter.loadPets();
+                            presenter.reloadPets();
                         }
                     })
                     .show();
