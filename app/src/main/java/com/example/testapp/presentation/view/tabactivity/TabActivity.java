@@ -1,4 +1,4 @@
-package com.example.testapp.TabActivity;
+package com.example.testapp.presentation.view.tabactivity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,10 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.example.testapp.Model.TabLayoutItem;
+import com.example.testapp.presentation.model.TabLayoutItem;
 import com.example.testapp.R;
-import com.example.testapp.Retrofit.AppSingleton;
-import com.example.testapp.Utils.BaseFragment;
+import com.example.testapp.presentation.utils.BaseFragment;
 
 import java.util.List;
 
@@ -79,7 +78,7 @@ public class TabActivity extends AppCompatActivity implements TabLayout.OnTabSel
         tabLayout = findViewById(R.id.tab_layout);
         tabLayout.removeOnTabSelectedListener(this);
         tabLayout.removeAllTabs();
-        tabLayoutItems = AppSingleton.getTabLayoutItems(this);
+        tabLayoutItems = TabsFragmentProvider.getInstance().getTabLayoutItems(this);
         for (TabLayoutItem tabItem : tabLayoutItems) {
             tabLayout.addTab(tabLayout.newTab().setText(tabItem.getTitle()));
         }

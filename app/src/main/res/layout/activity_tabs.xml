@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".TabActivity.TabActivity">
+    tools:context=".presentation.view.tabactivity.TabActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"

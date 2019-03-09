@@ -1,7 +1,7 @@
-package com.example.testapp.Model;
+package com.example.testapp.presentation.model;
 
-import com.example.testapp.Utils.BaseFragment;
-import com.example.testapp.PetsList.PetsFragment;
+import com.example.testapp.presentation.utils.BaseFragment;
+import com.example.testapp.presentation.view.petslist.PetsFragment;
 
 public class TabLayoutItem {
     private String title;

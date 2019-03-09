@@ -1,4 +1,4 @@
-package com.example.testapp.PetsList;
+package com.example.testapp.presentation.view.petslist;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -9,12 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.testapp.Utils.BaseFragment;
-import com.example.testapp.Model.Pet;
-import com.example.testapp.PetDetail.PetDetailsFragment;
+import com.example.testapp.presentation.utils.BaseFragment;
+import com.example.testapp.model.Pet;
+import com.example.testapp.presentation.view.petdetail.PetDetailsFragment;
 import com.example.testapp.R;
-import com.example.testapp.Retrofit.AppSingleton;
-import com.example.testapp.Utils.ItemClickSupport;
+import com.example.testapp.data.RetrofitSingleton;
+import com.example.testapp.presentation.utils.ItemClickSupport;
 
 import java.util.List;
 
@@ -129,7 +129,7 @@ public class PetsFragment extends BaseFragment implements PetsListContract.View 
                     .setAction(R.string.reload, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            AppSingleton.resetModelsObservable(getArguments().getString(REQUEST_QUERY_BUNDLE));
+                            RetrofitSingleton.getInstance().resetModelsObservable(getArguments().getString(REQUEST_QUERY_BUNDLE));
                             showProgressBar();
                             presenter.loadPets();
                         }

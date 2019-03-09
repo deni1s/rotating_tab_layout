@@ -1,13 +1,12 @@
-package com.example.testapp.Retrofit;
+package com.example.testapp.data;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.example.testapp.BuildConfig;
-import com.example.testapp.Helper.ListHelper;
-import com.example.testapp.Model.PetResponse;
+import com.example.testapp.model.utils.ListHelper;
 import com.example.testapp.R;
-import com.example.testapp.Model.TabLayoutItem;
+import com.example.testapp.presentation.model.TabLayoutItem;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -24,15 +23,24 @@ import rx.Subscription;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 
-public class AppSingleton {
-    private static final String TAG = AppSingleton.class.getSimpleName();
+public class RetrofitSingleton {
+    private static final String TAG = RetrofitSingleton.class.getSimpleName();
+
+    private static RetrofitSingleton instance;
 
     private static PetsApiInterface apiService;
     private static HashMap<String, BehaviorSubject<PetResponse>> observableModelsList;
     private static Subscription subscription;
-    private static List<TabLayoutItem> tabLayoutItemList;
 
-    private AppSingleton() {
+    private RetrofitSingleton() {
+    }
+
+    public static RetrofitSingleton getInstance() {
+        if (instance == null) {
+            instance = new RetrofitSingleton();
+            init();
+        }
+        return instance;
     }
 
     public static void init() {
@@ -52,18 +60,7 @@ public class AppSingleton {
         observableModelsList = new HashMap<>();
     }
 
-    public static List<TabLayoutItem> getTabLayoutItems(Context context) {
-        if (ListHelper.isEmpty(tabLayoutItemList)) {
-            tabLayoutItemList = new ArrayList<>();
-            TabLayoutItem tabLayoutItemCat = new TabLayoutItem(context.getString(R.string.cats), context.getString(R.string.cats_query));
-            TabLayoutItem tabLayoutItemDog = new TabLayoutItem(context.getString(R.string.dogs), context.getString(R.string.dogs_query));
-            tabLayoutItemList.add(tabLayoutItemCat);
-            tabLayoutItemList.add(tabLayoutItemDog);
-        }
-        return tabLayoutItemList;
-    }
-
-    public static void resetModelsObservable(String query) {
+    public void resetModelsObservable(String query) {
         final BehaviorSubject<PetResponse> observableModelsItem = BehaviorSubject.create();
         observableModelsList.put(query, observableModelsItem);
 
@@ -88,7 +85,7 @@ public class AppSingleton {
     }
 
 
-    public static Observable<PetResponse> getModelsObservable(String query) {
+    public Observable<PetResponse> getModelsObservable(String query) {
         Observable<PetResponse> observableModelItem = observableModelsList.get(query);
         if (observableModelItem == null) {
             resetModelsObservable(query);

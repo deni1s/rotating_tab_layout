@@ -1,4 +1,4 @@
-package com.example.testapp.PetsList;
+package com.example.testapp.presentation.view.petslist;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

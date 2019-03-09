@@ -1,4 +1,4 @@
-package com.example.testapp.Utils.MVP;
+package com.example.testapp.presentation.utils.mvp;
 
 public abstract class PresenterBase<T extends MvpView> implements MvpPresenter<T> {
 

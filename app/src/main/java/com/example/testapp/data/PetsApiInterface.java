@@ -1,6 +1,6 @@
-package com.example.testapp.Retrofit;
+package com.example.testapp.data;
 
-import com.example.testapp.Model.PetResponse;
+import com.example.testapp.data.PetResponse;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

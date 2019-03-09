@@ -1,6 +1,6 @@
-package com.example.testapp.Model;
+package com.example.testapp.data;
 
-import com.example.testapp.Model.Pet;
+import com.example.testapp.model.Pet;
 
 import java.util.List;
 

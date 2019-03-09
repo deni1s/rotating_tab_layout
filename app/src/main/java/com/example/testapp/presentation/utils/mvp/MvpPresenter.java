@@ -1,4 +1,4 @@
-package com.example.testapp.Utils.MVP;
+package com.example.testapp.presentation.utils.mvp;
 
 public interface MvpPresenter<V extends MvpView> {
  

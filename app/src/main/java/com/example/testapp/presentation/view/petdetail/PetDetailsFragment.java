@@ -1,4 +1,4 @@
-package com.example.testapp.PetDetail;
+package com.example.testapp.presentation.view.petdetail;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.testapp.Utils.BaseFragment;
-import com.example.testapp.Model.Pet;
+import com.example.testapp.presentation.utils.BaseFragment;
+import com.example.testapp.model.Pet;
 import com.example.testapp.R;
 import com.squareup.picasso.Picasso;
 

@@ -1,8 +1,8 @@
-package com.example.testapp.PetsList;
+package com.example.testapp.presentation.view.petslist;
 
-import com.example.testapp.Model.Pet;
-import com.example.testapp.Utils.MVP.MvpPresenter;
-import com.example.testapp.Utils.MVP.MvpView;
+import com.example.testapp.model.Pet;
+import com.example.testapp.presentation.utils.mvp.MvpPresenter;
+import com.example.testapp.presentation.utils.mvp.MvpView;
 
 import java.util.List;
 

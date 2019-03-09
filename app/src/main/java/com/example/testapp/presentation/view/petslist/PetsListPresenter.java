@@ -1,8 +1,8 @@
-package com.example.testapp.PetsList;
+package com.example.testapp.presentation.view.petslist;
 
-import com.example.testapp.Model.PetResponse;
-import com.example.testapp.Retrofit.AppSingleton;
-import com.example.testapp.Utils.MVP.PresenterBase;
+import com.example.testapp.data.PetResponse;
+import com.example.testapp.data.RetrofitSingleton;
+import com.example.testapp.presentation.utils.mvp.PresenterBase;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -24,7 +24,7 @@ public class PetsListPresenter extends PresenterBase<PetsListContract.View> impl
             subscription.unsubscribe();
         }
         getView().showProgressBar();
-        subscription = AppSingleton.getModelsObservable(query).
+        subscription = RetrofitSingleton.getInstance().getModelsObservable(query).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).
                 subscribe(new Subscriber<PetResponse>() {
