@@ -49,7 +49,6 @@ public class PetsListPresenter extends PresenterBase<PetsListContract.View> impl
     @Override
     public void reloadPets() {
         RetrofitSingleton.getInstance().resetModelsObservable(query);
-        getView().showProgressBar();
         loadPets();
     }
 
